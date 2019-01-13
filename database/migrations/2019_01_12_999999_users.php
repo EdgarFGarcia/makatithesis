@@ -27,7 +27,10 @@ class Users extends Migration
 
             $table->string('password')->nullable();
 
-            $table->string('remember_token');
+            $table->unsignedInteger('position_id');
+            $table->foreign('position_id')->references('id')->on('position');            
+
+            $table->string('remember_token')->nullable();
 
             $table->timestamps();
         });

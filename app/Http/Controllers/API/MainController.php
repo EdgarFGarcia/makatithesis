@@ -28,7 +28,8 @@ class MainController extends Controller
 	// logout
 	public function logout(){
 		Auth::logout();
-		return redirect()->intended('welcome');
+		// return redirect()->intended('welcome');
+        return view('welcome');
 	}
 
 	// make an appointment
@@ -54,5 +55,39 @@ class MainController extends Controller
     			'response' => array()
     		], 403);
     	}
+    }
+
+    // load appointment
+    public function loadAppointment(){
+        return $query = Repository::loadAppointment();
+    }
+
+    // load data from appointment
+    public function loadDataAppointment(Request $r){
+        // return $r->data['appointmentId'];
+        return $query = Repository::loadDataAppointment($r);
+
+    }
+
+    // approve appointment
+    public function approveAppointment(Request $r){
+        // return $r->appointId;
+        return $query = Repository::approveAppointment($r);
+
+    }
+
+    public function approveAppointmentDone(Request $r){
+        return $query = Repository::approveAppointmentDone($r);
+    }
+
+    // load datatable user appointment
+    public function loadTableUser(){
+        // return auth()->loginUsingId(1)->id;
+        // if(Auth::check()){
+            return $query = Repository::loadTableUser();
+        // }else{
+            // return "nope";
+        // }
+        // return $query = Repository::loadTableUser();
     }
 }

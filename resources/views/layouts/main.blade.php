@@ -16,6 +16,8 @@
 
 		<!-- Custom styles for this template-->
 		<link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+
+    <link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
 	</head>
 	<body id="page-top">
 		
@@ -203,9 +205,9 @@
 
           <!-- Area Chart -->
           <div class="card border-0 shadow mb-4">
-            <div class="card-header border-0 py-3 d-flex flex-row align-items-center justify-content-between">
+            <!-- <div class="card-header border-0 py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-              <!-- Card Header Dropdown -->
+              Card Header Dropdown
               <div class="dropdown no-arrow">
                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-ellipsis-v fa-sm fa-fw mx-1 text-gray-400"></i>
@@ -224,21 +226,19 @@
               <div class="chart-area">
                 <canvas id="myAreaChart"></canvas>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <div class="row align-items-stretch">
-            <div class="col-lg-6 mb-4">
+            <div class="col-lg-12 mb-4">
 
               <!-- Approach -->
               <div class="card border-0 shadow mb-4">
                 <div class="card-header border-0 py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">@yield('firstcardtitle')</h6>
                 </div>
                 <div class="card-body">
-                  <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce CSS bloat and poor page performance. Custom CSS classes are used to create custom components and custom utility classes.</p>
-                  <p>Before working with this theme, you should become familiar with the Bootstrap framework, especially the utility classes. Custom utility classes and components within this theme are explained in the documentation.</p>
-                  <a href="#" class="btn btn-primary">View Documentation</a>
+                  @yield('firstcardcontent')
                 </div>
               </div>
 
@@ -325,9 +325,9 @@
               <!-- Grayscale -->
               <div class="card border-0 shadow mb-4">
                 <div class="card-header border-0 py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Grayscale</h6>
+                  <!-- <h6 class="m-0 font-weight-bold text-primary">Grayscale</h6> -->
                 </div>
-                <div class="card-body">
+                <!-- <div class="card-body">
                   <div class="card bg-gray-100 border-0 rounded-0">
                     <div class="card-body">
                       Gray 100
@@ -382,7 +382,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
             </div>
 
@@ -525,5 +525,8 @@
 
 		<!-- Page level custom scripts -->
 		<script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
+
+    <script src="{{ asset('js/datatables.min.js') }}"></script>
+    @yield('scripts')
 	</body>
 </html>

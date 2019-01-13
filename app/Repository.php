@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use DB;
 use Hash;
 
+use Auth;
+
+use Illuminate\Support\Collection;
+use DataTables;
+
 class Repository extends Model
 {
     //
@@ -24,6 +29,7 @@ class Repository extends Model
     		'mobilenumber' => $data->mobilenumber,
     		'email' => $data->emailaddress,
     		'password' => $password,
+    		'position_id' => 1,
     		'created_at' => DB::raw("NOW()")
     	]);
     	// dd($query);
@@ -36,5 +42,113 @@ class Repository extends Model
     	]);
 
     	return array($query, $query2);
+    }
+
+    // get appointment admin
+    public static function loadAppointment(){
+        $query = DB::connection('mysql')
+        ->table('appointments as a')
+
+        ->select(
+            DB::raw("CONCAT(b.lastname, ', ', b.firstname, ' ', b.middlename) as name"),
+            'a.from as appointment',
+            'a.is_approved as approved',
+            'a.is_done as done',
+            'a.id as appointmentId',
+            'b.id as userId'
+        )
+
+        ->join('users as b', 'a.user_id', '=', 'b.id')
+
+        ->get();
+
+        $data = array();
+
+        foreach($query as $out){
+            $obj = new \stdClass;
+
+            $obj->appointmentId = $out->appointmentId;
+            $obj->userId = $out->userId;
+            $obj->name = $out->name;
+            $obj->approved = $out->approved;
+            $obj->done = $out->done;
+            $obj->appointment = $out->appointment;
+
+            $data[] = $obj;
+        }
+
+        $info = new Collection($data);
+        return DataTables::of($info)->make(true);
+    }
+
+    public static function loadTableUser(){
+        $query = DB::connection('mysql')
+        ->table('appointments')
+        ->select('*')
+        ->where('id', auth()->loginUsingId(1)->id)
+        ->get();
+
+        $data = array();
+
+        foreach($query as $out){
+            $obj = new \stdClass;
+
+            $obj->date = $out->from;
+            $obj->approved = $out->is_approved;
+            $obj->done = $out->is_done;
+
+            $data[] = $obj;
+        }
+
+        $info = new Collection($data);
+        return DataTables::of($info)->make(true);
+
+        // return $response = response()->json([
+        //     'response' => $query
+        // ]);
+    }
+
+    // load data from appointment
+    public static function loadDataAppointment($data){
+        $query = DB::connection('mysql')
+        ->table('appointments')
+
+        ->select(
+            // '*'
+            DB::raw("CONCAT(users.lastname, ', ', users.firstname, ' ', users.middlename) as name"),
+            'appointments.from as appointment',
+            'appointments.id as appointmentId'
+        )
+
+        ->join('users', 'appointments.user_id', '=', 'users.id')
+        ->where('appointments.id', $data->data['appointmentId'])
+        ->first();
+
+        return $result = response()->json([
+            'response' => $query 
+        ]);
+
+    }
+
+    // approve appointment
+    public static function approveAppointment($data){
+        $query = DB::connection('mysql')
+        ->table('appointments')
+        ->where('id', $data->appointId)
+        ->update([
+            'is_approved' => 1,
+            'updated_at' => DB::raw("NOW()")
+        ]);
+    }
+
+    //done appointment (nabunutan na)
+    public static function approveAppointmentDone($data){
+        $query = DB::connection('mysql')
+        ->table('appointments')
+        ->where('id', $data->appointId)
+        ->update([
+            'is_done' => 1,
+            'updated_at' => DB::raw("NOW()")
+        ]);
     }
 }
