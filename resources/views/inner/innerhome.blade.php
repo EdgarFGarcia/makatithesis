@@ -21,7 +21,7 @@
 		</div>
 		<div class="col-md-4">
 			<label for="mobilenumber">Mobile Number</label>
-			<input type="number" class="form-control" placeholder="0927xxxxxxx" id="mobilenumber">
+			<input type="text" class="form-control" placeholder="0927xxxxxxx" id="mobilenumber">
 		</div>
 		<div class="col-md-4">
 			<label for="emailaddress">Email Address</label>

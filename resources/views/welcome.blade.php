@@ -19,7 +19,7 @@
         <!-- Styles -->
 
     </head>
-    <body>
+    <body style="background-color: #00FF00;">
         <br/><br/>
         <div class="container-fluid">
             <div class="row">

@@ -12,6 +12,8 @@ use Auth;
 use Illuminate\Support\Collection;
 use DataTables;
 
+use Nexmo;
+
 class Repository extends Model
 {
     //
@@ -175,6 +177,20 @@ class Repository extends Model
             'is_approved' => 1,
             'updated_at' => DB::raw("NOW()")
         ]);
+
+        $message = DB::connection('mysql')
+        ->table('appointments')
+        ->select('*')
+        ->join('users', 'appointments.user_id', '=', 'users.id')
+        ->where('appointments.id', $data->appointId)
+        ->get();
+
+        Nexmo::message()->send([
+            'to' => $message[0]->mobilenumber,
+            'from' => 'KABAKA',
+            'text' => 'Your Appointment ' . $message[0]->from . ' Has been approved'
+        ]);
+
     }
 
     //done appointment (nabunutan na)

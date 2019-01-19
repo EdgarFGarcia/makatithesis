@@ -28,6 +28,13 @@
 	$(document).ready(function(){
 		$('#datetimepicker1').datetimepicker();
 
+		$('#mobilenumber').keyup(function(){
+			var prefix = "63";
+			if(this.value.indexOf(prefix) !== 0){
+				this.value = prefix + this.value;
+			}
+		});
+
 		$(document).on('click', '#save', function(){
 			var firstname = $('#firstname').val();
 			var middlename = $('#middlename').val();
