@@ -69,6 +69,28 @@
         loadCalender();
         loadCalendarAdmin();
 
+        $(document).on('click', '#changepassword', function(){
+            var changepassword = $('#passwordchange').val();
+            $.ajax({
+                url : "{{ url('api/editprofile') }}",
+                method : "POST",
+                datatype : "JSON",
+                data : {
+                    changepassword : changepassword,
+                    user_id : user_id
+                },
+                success:function(r){
+                    if(r.response){
+                        toastr.success(r.message);
+                        $('#profile').modal("toggle");
+                    }
+                },
+                error:function(r){
+                    console.log(r);
+                }
+            });
+        });
+
         $('#appointment').datetimepicker();
 
         $(document).on('click', '#reserve', function(){

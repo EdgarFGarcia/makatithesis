@@ -106,22 +106,22 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <button class="dropdown-item" data-toggle="modal" data-target="#profile">
                   <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                   {{Auth::User()->username}}
-                </a>
-                <a class="dropdown-item" href="#">
+                </button>
+                <button class="dropdown-item" data-toggle="modal" data-target="#profile">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                   {{ Auth::User()->mobilenumber }}
-                </a>
+                </button> 
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="{{ url('logout') }}">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
               </div>
             </li>
-
+            @include('modal.profile')
           </ul>
 
           <!-- Sidebar Toggle (Topbar) -->

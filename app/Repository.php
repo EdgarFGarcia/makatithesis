@@ -215,4 +215,15 @@ class Repository extends Model
         ->groupBy('created_at')
         ->get();
     }
+
+    // edit profile
+    public static function editprofile($data){
+        $newpassword = Hash::make($data->changepassword);
+        return $query = DB::connection('mysql')
+        ->table('users')
+        ->where('id', $data->user_id)
+        ->update([
+            'password' => $newpassword
+        ]);
+    }
 }

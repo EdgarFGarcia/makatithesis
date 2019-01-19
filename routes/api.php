@@ -31,3 +31,6 @@ Route::get('getSales', 'API\MainController@getSales');
 
 // make appointment inner
 Route::post('appointmentInner', 'API\MainController@appointmentInner');
+
+// edit profile
+Route::post('editprofile', 'API\MainController@editprofile');

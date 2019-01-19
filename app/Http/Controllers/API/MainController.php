@@ -162,4 +162,25 @@ class MainController extends Controller
 
         return json_encode($query);
     }
+
+    // edit profile
+    public function editprofile(Request $r){
+        // changepassword, user_id
+        if(!empty($r->changepassword)){
+            $query = Repository::editprofile($r);
+            if($query){
+                return response()->json([
+                    'message' => "Changing Password Successful",
+                    'response' => $query
+                ], 200);
+            }else{
+                return response()->json([
+                    'message' => "There's an error editing your profile",
+                    'response' => array()
+                ], 403);
+            }
+        }
+
+        return false;
+    }
 }
