@@ -69,11 +69,16 @@
 						$('#emailaddress').val('');
 						$('#appointment').val('');
 					}
+					if(!r.response){
+                        // console.log("I went here");
+                        toastr.error(r.message);
+                    }
 				},
 				error:function(r){
 					if(r.message = "The given data was invalid."){
 						toastr.error("User Already Exist, Please Login");
-					}				}
+					}				
+				}
 			});
 
 		});

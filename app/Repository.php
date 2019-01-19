@@ -14,9 +14,24 @@ use DataTables;
 
 use Nexmo;
 
+use Carbon\Carbon;
+
 class Repository extends Model
 {
     //
+    // check appointment
+    public static function checkAppointment($dateTocheck){
+        return $query = DB::connection('mysql')
+        ->table('appointments')
+        ->select(
+            DB::raw("COUNT(*) AS count")
+        )
+        ->where('from', $dateTocheck)
+        ->get();
+
+    }
+
+
     public static function saveCustomerInfo($data, $date){
 
     	$username = $data->firstname . $data->lastname;

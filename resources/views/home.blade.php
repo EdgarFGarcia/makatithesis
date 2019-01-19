@@ -110,6 +110,12 @@
                         toastr.success(r.message);
                         reloadUserTable();
                     }
+                    
+                    if(!r.response){
+                        // console.log("I went here");
+                        toastr.error(r.message);
+                    }
+                    
                 },
                 error:function(r){
                     toastr.error(r.message);
