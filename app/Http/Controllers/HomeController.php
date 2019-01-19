@@ -26,13 +26,13 @@ class HomeController extends Controller
      */
     public function index()
     {   
-
         $query = DB::connection('mysql')
         ->table('users')
         ->where('mobilenumber', Auth::User()->mobilenumber)
-        ->get();
+        ->first();
 
-
-        return view('home')->with(['user'=>$query]);
+        return view('home')->with([
+            'user_id' => Auth::User()->id
+        ]);
     }
 }

@@ -25,3 +25,6 @@ Route::post('loadDataAppointment', 'API\MainController@loadDataAppointment');
 
 Route::post('approveAppointment', 'API\MainController@approveAppointment');
 Route::post('approveAppointmentDone', 'API\MainController@approveAppointmentDone');
+Route::post('loadMyAppointment', 'API\MainController@loadMyAppointment');
+Route::post('loadAllCalendar', 'API\MainController@loadAllCalendar');
+Route::get('getSales', 'API\MainController@getSales');

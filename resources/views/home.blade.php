@@ -34,15 +34,38 @@
 @include('modal.infoappointment')
 @endsection
 
+@section('appointmentCalendarTitle')
+@if(Auth::User()->position_id == 2)
+    Schedule of Patients
+@else
+    Your Schedule(s)
+@endif
+@endsection
+
+@section('appointmentCalendarContent')
+@if(Auth::User()->position_id == 2)
+<div class="col-md-12" id="calendarAdmin">
+    
+</div>
+@else
+<div class="col-md-12" id="calendar">
+    
+</div>
+@endif
+@endsection
+
 @section('scripts')
 <script type="text/javascript">
 
     var appointmentAdmin;
     var appointmentUser;
+    var user_id = {{Auth::User()->id}}
 
     $(document).ready(function(){
         loadTable();
         loadUserTable();
+        loadCalender();
+        loadCalendarAdmin();
 
         $('#appointmentAdmin').on('click', 'tbody tr', function(){
             var data = appointmentAdmin.row(this).data();
@@ -136,24 +159,15 @@
 
     function loadUserTable(){
 
-        // $.ajax({
-        //     url: "{{ url('api/loadTableUser') }}",
-        //     method: "GET",
-        //     datatype: "JSON",
-        //     success:function(r){
-        //         console.log(r);
-        //     },
-        //     error:function(r){
-        //         console.log(r);
-        //     }
-        // });
-
         appointmentUser = $('#appointmentUser').DataTable({
             processSide: true,
             serverSide: true,
             ajax: {
                 type: "GET",
                 url: "{{ url('api/loadTableUser') }}",
+                data : {
+                    user_id : user_id
+                },
             },
             columns: [
                 {data: 'date', name: 'date'},
@@ -164,18 +178,6 @@
     }
 
     function loadTable(){
-
-        // $.ajax({
-        //     url: "{{ url('api/loadAppointment') }}",
-        //     method: "GET",
-        //     datatype: "JSON",
-        //     success:function(r){
-        //         console.log(r);
-        //     },
-        //     error:function(r){
-        //         console.log(r);
-        //     }
-        // });
 
         appointmentAdmin = $('#appointmentAdmin').DataTable({
             processing: true,
@@ -191,6 +193,65 @@
                 {data: 'done', name: 'done'}
             ]
         });
+    }
+
+    function loadCalendarAdmin(){
+        $('#calendarAdmin').fullCalendar({
+            eventSources: [{
+                url: "{{ url('api/loadAllCalendar') }}",
+                type: "POST",
+                error: function(r){
+                    console.log(r);
+                },
+                success:function(r){
+                    console.log(r);
+                },
+                color: 'black',
+                textColor: 'white'
+            }]
+        });
+    }
+
+    function loadCalender(){
+
+        $('#calendar').fullCalendar({
+
+            eventSources: [
+            // your event source
+            {
+              url: '{{ url('api/loadMyAppointment') }}',
+              type: 'POST',
+              data: {
+                user_id : user_id
+              },
+              error: function(r) {
+                console.log(r);
+              },
+              color: 'black',   // a non-ajax option
+              textColor: 'white' // a non-ajax option
+            }
+
+            // any other sources...
+
+          ]
+
+            // eventSources: [
+            //     url: "{{ url('api/loadMyAppointment') }}",
+            //     type: "POST",
+            //     data: {
+            //         user_id : user_id
+            //     },
+            //     error:function(r){
+            //         console.log(r);
+            //     },
+            //     color: 'red',
+            //     textColor: 'black'
+            // ]
+
+        });
+
+        
+        
     }
 </script>
 @endsection

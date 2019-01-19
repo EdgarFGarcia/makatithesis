@@ -5,23 +5,31 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repository;
-use Carbon\Carbon;
 
 use Auth;
 use Redirect;
 
+use \DateTime;
+use Calendar;
+
 class MainController extends Controller
 {
     //
+
+    //index
+    // public function index(){
+    //     return view('welcome');
+    // }
+
 	//login
 	public function login(Request $r){
 		// return $r->all();
 		$credentials = $r->only('username', 'password');
 
 		if(Auth::attempt($credentials)){
-			return redirect()->intended('home');
+			return redirect()->intended('/home');
 		}else{
-			return redirect()->intended('welcome');
+			return redirect('/');
 		}
 	}
 
@@ -29,12 +37,11 @@ class MainController extends Controller
 	public function logout(){
 		Auth::logout();
 		// return redirect()->intended('welcome');
-        return view('welcome');
+        return;
 	}
 
 	// make an appointment
     public function appoint(Request $r){
-
     	$validateData = $r->validate([
     		'firstname' => 'required|string',
     		'middlename' => 'required|string',
@@ -42,7 +49,7 @@ class MainController extends Controller
     		'mobilenumber' => 'required|unique:users',
     	]);
 
-    	$date = date('Y-m-d', strtotime($r->date));
+    	$date = date('Y-m-d H:i:s', strtotime($r->date));
     	$query = Repository::saveCustomerInfo($r, $date);
     	if($query){
     		return response()->json([
@@ -81,13 +88,70 @@ class MainController extends Controller
     }
 
     // load datatable user appointment
-    public function loadTableUser(){
-        // return auth()->loginUsingId(1)->id;
+    public function loadTableUser(Request $r){
         // if(Auth::check()){
-            return $query = Repository::loadTableUser();
+            return $query = Repository::loadTableUser($r);
         // }else{
             // return "nope";
         // }
         // return $query = Repository::loadTableUser();
+    }
+
+    // load my appointment
+    public function loadMyAppointment(Request $r){
+
+        $query = Repository::loadMyAppointment($r);
+
+        $test = array();
+
+        foreach($query as $out){
+
+            $test[] = array(
+                'allDay' => false,
+                'title' => "Schedule",
+                'id' => $out->id,
+                'end'   => $out->from,
+                'start' => $out->from,
+            );
+
+            
+        }
+
+        return json_encode($test);
+    }
+
+    public function sales(){
+        return view('sales');
+    }
+
+    public function loadAllCalendar(){
+        $query = Repository::loadAllCalendar();
+        $all = array();
+        foreach($query as $out){
+            $all[] = array(
+                'allDay' => false,
+                'title' => $out->lastname . ", " . $out->firstname . " " . $out->lastname,
+                'id' => $out->id,
+                'end' => $out->from,
+                'start' => $out->from
+            );
+        }
+
+        return json_encode($all);
+    }
+
+    // sales
+    public function getSales(){
+        return $query = Repository::getSales();
+        // $sales = array();
+        // if($query){
+        //     foreach($query as $out){
+        //         $sales[] = array(
+        //             'sales' => $out
+        //         );
+        //     }
+        // }
+
+        return json_encode($sales);
     }
 }

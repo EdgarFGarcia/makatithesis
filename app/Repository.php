@@ -81,11 +81,12 @@ class Repository extends Model
         return DataTables::of($info)->make(true);
     }
 
-    public static function loadTableUser(){
+    public static function loadTableUser($data){
+
         $query = DB::connection('mysql')
         ->table('appointments')
         ->select('*')
-        ->where('id', auth()->loginUsingId(1)->id)
+        ->where('user_id', $data->user_id)
         ->get();
 
         $data = array();
@@ -102,10 +103,32 @@ class Repository extends Model
 
         $info = new Collection($data);
         return DataTables::of($info)->make(true);
+    }
 
-        // return $response = response()->json([
-        //     'response' => $query
-        // ]);
+    public static function loadMyAppointment($data){
+
+        return $query = DB::connection('mysql')
+
+        ->table('appointments')
+
+        ->select('*')
+
+        ->where('user_id', $data->user_id)
+        ->where('is_approved', 1)
+        ->where('is_done', 0)
+
+        ->get();
+
+    }
+
+    public static function loadAllCalendar(){
+        return $query = DB::connection('mysql')
+        ->table('appointments')
+        ->select('*')
+        ->join('users', 'appointments.user_id', '=', 'users.id')
+        ->where('is_approved', 1)
+        ->where('is_done', 0)
+        ->get();
     }
 
     // load data from appointment
@@ -150,5 +173,17 @@ class Repository extends Model
             'is_done' => 1,
             'updated_at' => DB::raw("NOW()")
         ]);
+    }
+
+    //sales
+    public static function getSales(){
+        return $query = DB::connection('mysql')
+        ->table('appointments')
+        ->select(
+            DB::raw("COUNT(is_done) as 'count'")
+        )
+        ->where('is_done', 1)
+        ->groupBy('created_at')
+        ->get();
     }
 }

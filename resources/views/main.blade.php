@@ -26,9 +26,7 @@
 @section('scripts')
 <script>
 	$(document).ready(function(){
-		$('#appointment').datepicker({
-			uiLibrary: 'bootstrap4'
-		});
+		$('#datetimepicker1').datetimepicker();
 
 		$(document).on('click', '#save', function(){
 			var firstname = $('#firstname').val();
@@ -37,7 +35,7 @@
 			var phonenumber = $('#phonenumber').val();
 			var mobilenumber = $('#mobilenumber').val();
 			var emailaddress = $('#emailaddress').val();
-			var date = $('#appointment').val();
+			var date = $('#appontment').val();
 
 			$.ajax({
 				url: "{{ url('api/appoint') }}",

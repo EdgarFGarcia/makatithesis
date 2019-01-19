@@ -17,6 +17,20 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Route::group(['middleware' => ['preventbackhistory']], function () {
+
+//     Route::group(['middleware' => ['checkislogin']], function () {
+//         Route::get('/', 'API\MainController@index');
+//         Route::get('/login', 'API\MainController@index')->name('login');
+//     });
+    
+//     Route::group(['middleware' => ['checkisuser']], function () {
+//         Route::get('/main', 'API\MainController@login');
+//     });
+
+// });
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('login', 'API\MainController@login');
 Route::get('logout', 'API\MainController@logout');
+Route::get('sales', 'API\MainController@sales');

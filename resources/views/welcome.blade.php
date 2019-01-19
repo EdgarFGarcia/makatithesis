@@ -12,6 +12,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/datepicker.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/fullcalendar.min.css') }}">
         <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
         <!-- <link rel="stylesheet" href="{{ asset('css/sb-admin-2.min.css') }}"> -->
@@ -46,6 +47,9 @@
 
         <script type="text/javascript" src="{{ asset('js/jquery.js') }}"></script>
         <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/moment.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/momentlocale.js') }}"></script>
+        <script src="{{ asset('js/fullcalendar.min.js') }}"></script>
         <script src="{{ asset('js/datepicker.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/toastr.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
