@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title', 'KABAKA - Home')
 @section('firstcardtitle')
 @if(Auth::User()->position_id == 2)
     Appointment Of Patients
@@ -21,6 +21,7 @@
         </thead>
     </table>
 @else
+    <button class="btn btn-info" id="makeAppointmentUser" data-toggle="modal" data-target="#makeAppointment">Make An Appointment</button>
     <table class="table table-bordered" id="appointmentUser">
         <thead>
             <tr>
@@ -32,6 +33,7 @@
     </table>
 @endif
 @include('modal.infoappointment')
+@include('modal.makeappointment')
 @endsection
 
 @section('appointmentCalendarTitle')
@@ -66,6 +68,34 @@
         loadUserTable();
         loadCalender();
         loadCalendarAdmin();
+
+        $('#appointment').datetimepicker();
+
+        $(document).on('click', '#reserve', function(){
+            var appointment = $('#appointmentInner').val();
+
+            $.ajax({
+                url: "{{ url('api/appointmentInner') }}",
+                method: "POST",
+                datatype: "JSON",
+                data: {
+                    user_id : user_id,
+                    appointment : appointment
+                },
+                success:function(r){
+                    if(r.response){
+                        $('#makeAppointment').modal("toggle");
+                        toastr.success(r.message);
+                        reloadUserTable();
+                    }
+                },
+                error:function(r){
+                    toastr.error(r.message);
+                }
+            });
+
+        });
+        
 
         $('#appointmentAdmin').on('click', 'tbody tr', function(){
             var data = appointmentAdmin.row(this).data();
@@ -152,9 +182,16 @@
 
     });
 
+    function reloadUserTable(){
+        $('#appointmentUser').DataTable().ajax.reload();
+    }
+
     function reloadAppointmentTable(){
         $('#appointmentAdmin').DataTable().ajax.reload();
         $('#userinfoappointment').modal("toggle");
+        $('#calendarAdmin').fullCalendar('removeEvents');
+        $('#calendarAdmin').fullCalendar('refetchEvents');
+
     }
 
     function loadUserTable(){

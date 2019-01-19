@@ -8,7 +8,7 @@
 		<meta name="author" content="">
 		<meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>@yield('title')</title>
+    <title>@yield('title')</title>
 
         <!-- Custom fonts for this template-->
 		<link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -16,7 +16,9 @@
 
 		<!-- Custom styles for this template-->
 		<link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/datepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/calendar.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
     <link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
 	</head>
 	<body id="page-top">
@@ -28,7 +30,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/home') }}">
         <div class="sidebar-brand-icon">
           <i class="fas fa-laugh-wink"></i>
         </div>
@@ -263,7 +265,9 @@
     <script type="text/javascript" src="{{ asset('js/moment.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/momentlocale.js') }}"></script>
     <script src="{{ asset('js/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('js/datepicker.min.js') }}"></script>
     <script src="{{ asset('js/jquery.canvasjs.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/canvasjs.min.js') }}"></script>
 		<!-- Core plugin JavaScript-->
 		<script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>

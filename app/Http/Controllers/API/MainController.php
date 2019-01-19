@@ -58,6 +58,27 @@ class MainController extends Controller
     	}
     }
 
+    // make an appointment inner
+    public function appointmentInner(Request $r){
+
+        $date = date('Y-m-d H:i:s', strtotime($r->appointment));
+
+        $query = Repository::appointmentInner($r, $date);
+
+        if($query){
+            return response()->json([
+                'message' => 'Appointment Successful',
+                'response' => $query
+            ]);
+        }else{
+            return response()->json([
+                'message' => "There's An Error!",
+                'response' => array()
+            ]);
+        }
+
+    }
+
     // load appointment
     public function loadAppointment(){
         return $query = Repository::loadAppointment();
@@ -119,12 +140,12 @@ class MainController extends Controller
     }
 
     public function loadAllCalendar(){
-        return $query = Repository::loadAllCalendar();
+        $query = Repository::loadAllCalendar();
         $all = array();
         foreach($query as $out){
             $all[] = array(
                 'allDay' => false,
-                'title' => $out->lastname . ", " . $out->firstname . " " . $out->lastname,
+                'title' => $out->lastname . ", " . $out->firstname . " " . $out->middlename,
                 'id' => $out->id,
                 'end' => $out->from,
                 'start' => $out->from
@@ -138,6 +159,6 @@ class MainController extends Controller
     public function getSales(){
         $query = Repository::getSales();
 
-        return json_encode($sales);
+        return json_encode($query);
     }
 }

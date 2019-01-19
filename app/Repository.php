@@ -44,6 +44,17 @@ class Repository extends Model
     	return array($query, $query2);
     }
 
+    //create an appointment inner
+    public static function appointmentInner($data, $date){
+        return $query = DB::connection('mysql')
+        ->table('appointments')
+        ->insert([  
+            'user_id' => $data->user_id,
+            'from' => $date,
+            'created_at' => DB::raw("NOW()")
+        ]);
+    }
+
     // get appointment admin
     public static function loadAppointment(){
         $query = DB::connection('mysql')

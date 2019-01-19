@@ -1,5 +1,5 @@
 @extends('layouts.main')
-
+@section('title', 'KABAKA - Sales')
 @section('firstcardtitle')
 
 @endsection
@@ -37,7 +37,7 @@
         });
     }               
 
-    var updateInterval = 5000;
+    var updateInterval = 1000;
 
     setInterval(function(){
             updateChart()
