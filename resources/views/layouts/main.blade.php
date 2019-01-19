@@ -15,7 +15,7 @@
 		<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
 		<!-- Custom styles for this template-->
-		<link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+		<link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/calendar.min.css') }}">
     <link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
 	</head>
@@ -50,6 +50,7 @@
       <hr class="sidebar-divider">
 
       <!-- Heading -->
+      @if(Auth::User()->position_id == 2)
       <div class="sidebar-heading">
         Sales
       </div>
@@ -58,12 +59,10 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="{{ url('sales') }}">
           <i class="fas fa-fw fa-folder"></i>
-          @if(Auth::User()->position_id == 2)
             <span>Reports</span>
-          @endif
         </a>
       </li>
-
+      @endif
       <!-- Divider -->
       <hr class="sidebar-divider">
 
@@ -87,50 +86,17 @@
           <!-- Topbar Search -->
           <form class="d-none d-md-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 w-100">
             <div class="input-group">
-              <input type="text" class="form-control border-0 bg-light" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" style="font-size: 0.85rem;">
+              <!-- <input type="text" class="form-control border-0 bg-light" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" style="font-size: 0.85rem;">
               <div class="input-group-append">
                 <button class="btn btn-primary" type="button">
                   <i class="fas fa-search fa-sm"></i>
                 </button>
-              </div>
+              </div> -->
             </div>
           </form>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav mr-auto ml-md-auto">
-
-            <!-- Nav Item - Alerts -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">9+</span>
-              </a>
-              <!-- Dropdown - Alerts -->
-              <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-
-            <!-- Nav Item - Messages -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw"></i>
-                <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">7</span>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-menu dropdown-menu-right border-0 shadow animated--grow-in" aria-labelledby="messagesDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

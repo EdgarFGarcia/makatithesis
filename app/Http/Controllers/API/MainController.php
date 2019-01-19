@@ -15,12 +15,6 @@ use Calendar;
 class MainController extends Controller
 {
     //
-
-    //index
-    // public function index(){
-    //     return view('welcome');
-    // }
-
 	//login
 	public function login(Request $r){
 		// return $r->all();
@@ -37,7 +31,7 @@ class MainController extends Controller
 	public function logout(){
 		Auth::logout();
 		// return redirect()->intended('welcome');
-        return;
+        return redirect('/');
 	}
 
 	// make an appointment
@@ -125,7 +119,7 @@ class MainController extends Controller
     }
 
     public function loadAllCalendar(){
-        $query = Repository::loadAllCalendar();
+        return $query = Repository::loadAllCalendar();
         $all = array();
         foreach($query as $out){
             $all[] = array(
@@ -142,15 +136,7 @@ class MainController extends Controller
 
     // sales
     public function getSales(){
-        return $query = Repository::getSales();
-        // $sales = array();
-        // if($query){
-        //     foreach($query as $out){
-        //         $sales[] = array(
-        //             'sales' => $out
-        //         );
-        //     }
-        // }
+        $query = Repository::getSales();
 
         return json_encode($sales);
     }
