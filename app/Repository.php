@@ -16,8 +16,10 @@ class Repository extends Model
 {
     //
     public static function saveCustomerInfo($data, $date){
+        
     	$username = $data->firstname . $data->lastname;
     	$password = Hash::make($username);
+
     	$query = DB::connection('mysql')
     	->table('users')
     	->insertGetId([

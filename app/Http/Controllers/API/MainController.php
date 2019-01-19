@@ -8,7 +8,7 @@ use App\Repository;
 
 use Auth;
 use Redirect;
-
+use Hash;
 use \DateTime;
 use Calendar;
 
@@ -18,6 +18,7 @@ class MainController extends Controller
 	//login
 	public function login(Request $r){
 		// return $r->all();
+        // return $hashedpassword = Hash::make($r->password);
 		$credentials = $r->only('username', 'password');
 
 		if(Auth::attempt($credentials)){

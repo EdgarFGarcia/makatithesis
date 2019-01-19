@@ -191,7 +191,6 @@
         $('#userinfoappointment').modal("toggle");
         $('#calendarAdmin').fullCalendar('removeEvents');
         $('#calendarAdmin').fullCalendar('refetchEvents');
-
     }
 
     function loadUserTable(){
