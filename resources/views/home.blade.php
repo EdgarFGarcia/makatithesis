@@ -65,10 +65,10 @@
 
     $(document).ready(function(){
 
-        var updateInterval = 3000;
-        setInterval(function(){
+        // var updateInterval = 3000;
+        // setInterval(function(){
                 loadTable();
-        }, updateInterval);
+        // }, updateInterval);
         loadUserTable();
         loadCalender();
         loadCalendarAdmin();
