@@ -64,7 +64,11 @@
     var user_id = {{Auth::User()->id}}
 
     $(document).ready(function(){
-        loadTable();
+
+        var updateInterval = 3000;
+        setInterval(function(){
+                loadTable();
+        }, updateInterval);
         loadUserTable();
         loadCalender();
         loadCalendarAdmin();
