@@ -90,6 +90,8 @@ class Repository extends Model
 
         ->join('users as b', 'a.user_id', '=', 'b.id')
 
+        ->where('a.is_done', 0)
+
         ->get();
 
         $data = array();
