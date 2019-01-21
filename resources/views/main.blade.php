@@ -55,7 +55,7 @@
 					phonenumber : phonenumber,
 					mobilenumber : mobilenumber,
 					emailaddress : emailaddress,
-					date : date
+					appointment : date
 				},
 				success:function(r){
 					// console.log(r);
@@ -67,7 +67,7 @@
 						$('#phonenumber').val('');
 						$('#mobilenumber').val('');
 						$('#emailaddress').val('');
-						$('#appointment').val('');
+						$('#appontment').val('');
 					}
 					if(!r.response){
                         // console.log("I went here");

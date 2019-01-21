@@ -37,15 +37,8 @@ class MainController extends Controller
 
 	// make an appointment
     public function appoint(Request $r){
+        // return $r->all();
         $dateTocheck = date('Y-m-d', strtotime($r->appointment));
-        $check = Repository::checkAppointment($dateTocheck);
-
-        if(count($check) >= 1){
-            return response()->json([
-                'message' => "Scheduling for this day is already full",
-                'response' => false
-            ]);
-        }
         
     	$validateData = $r->validate([
     		'firstname' => 'required|string',
@@ -53,6 +46,15 @@ class MainController extends Controller
     		'lastname' => 'required|string',
     		'mobilenumber' => 'required|unique:users',
     	]);
+
+        $check = Repository::checkAppointment($dateTocheck);
+
+        if(count($check) >= 3){
+            return response()->json([
+                'message' => "Scheduling for this day is already full",
+                'response' => false
+            ]);
+        }
 
     	$date = date('Y-m-d H:i:s', strtotime($r->date));
     	$query = Repository::saveCustomerInfo($r, $date);
