@@ -19,7 +19,7 @@
         <!-- Styles -->
 
     </head>
-    <body style="background-color: #00FF00;">
+    <body style="background-image: url({{ asset('images/bg.jpg')  }});">
         <br/><br/>
         <div class="container-fluid">
             <div class="row">
