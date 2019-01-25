@@ -76,7 +76,7 @@ class MainController extends Controller
         $dateTocheck = date('Y-m-d', strtotime($r->appointment));
         $check = Repository::checkAppointment($dateTocheck);
 
-        if(count($check) >= 1){
+        if(count($check) >= 3){
             return response()->json([
                 'message' => "Scheduling for this day is already full",
                 'response' => false
