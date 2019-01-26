@@ -54,8 +54,8 @@
         <script type="text/javascript" src="{{ asset('js/toastr.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('js/sb-admin-2.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
+        <!-- <script type="text/javascript" src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script> -->
+        <!-- <script type="text/javascript" src="{{ asset('js/demo/chart-area-demo.js') }}"></script> -->
         @yield('scripts')
 
     </body>

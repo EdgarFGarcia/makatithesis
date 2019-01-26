@@ -19,6 +19,20 @@ use Carbon\Carbon;
 class Repository extends Model
 {
     //
+    // check availability
+    public static function checkAvailability($date){
+        // return $date;
+        return $query = DB::connection('mysql')
+        ->table('appointments')
+        ->select(
+            DB::raw("COUNT(*) as count")
+        )
+        ->where('from', $date)
+        ->where('is_approved', '=', 0)
+        ->where('is_done', '=', 0)
+        ->get();
+    }
+
     // check appointment
     public static function checkAppointment($dateTocheck){
         return $query = DB::connection('mysql')
@@ -32,7 +46,7 @@ class Repository extends Model
     }
 
 
-    public static function saveCustomerInfo($data, $date){
+    public static function saveCustomerInfo($data, $date, $time, $whole){
 
     	$username = $data->firstname . $data->lastname;
     	$password = Hash::make($username);
@@ -57,40 +71,87 @@ class Repository extends Model
     	->insert([
     		'user_id' => $query,
     		'from' => $date,
+            'time' => $time,
+            'appointment' => $whole,
     		'created_at' => DB::raw("NOW()")
     	]);
 
-    	return array($query, $query2);
+        $query3 = DB::connection('mysql')
+        ->table('payment')
+        ->insert([
+            'user_id' => $query,
+            'payment' => '900',
+            'date' => $whole,
+            'created_at' => DB::raw("NOW()"),
+        ]);
+
+    	return array($query, $query2, $query3);
     }
 
     //create an appointment inner
-    public static function appointmentInner($data, $date){
-        return $query = DB::connection('mysql')
+    public static function appointmentInner($data, $date, $time, $whole){
+        $query = DB::connection('mysql')
         ->table('appointments')
         ->insert([  
             'user_id' => $data->user_id,
             'from' => $date,
+            'time' => $time,
+            'appointment' => $whole,
             'created_at' => DB::raw("NOW()")
+        ]);
+
+        $query2 = DB::connection('mysql')
+        ->table('payment')
+        ->insert([
+            'user_id' => $data->user_id,
+            'payment' => '900',
+            'date' => $whole,
+            'created_at' => DB::raw("NOW()")
+        ]);
+
+        return array($query, $query2);
+    }
+
+    // payment
+    public static function payment($date){
+        return $query = DB::connection('mysql')
+        ->table('payment')
+        ->where('date', $date)
+        // ->where('is_paid', 0)
+        ->get();
+    }
+
+    public static function makepayment($mode, $paymentDate){
+        return $query = DB::connection('mysql')
+        ->table('payment')
+        ->where('date', $paymentDate)
+        ->update([
+            'mode_of_payment' => $mode,
+            'is_paid' => 1
         ]);
     }
 
     // get appointment admin
     public static function loadAppointment(){
         $query = DB::connection('mysql')
+
         ->table('appointments as a')
 
         ->select(
             DB::raw("CONCAT(b.lastname, ', ', b.firstname, ' ', b.middlename) as name"),
-            'a.from as appointment',
+            'a.appointment as appointment',
             'a.is_approved as approved',
             'a.is_done as done',
             'a.id as appointmentId',
-            'b.id as userId'
+            'b.id as userId',
+            'c.is_paid as is_paid'
         )
 
         ->join('users as b', 'a.user_id', '=', 'b.id')
+        ->join('payment as c', 'a.user_id', '=', 'c.user_id')
 
         ->where('a.is_done', 0)
+        ->where('c.is_paid', 1)
 
         ->get();
 
@@ -105,6 +166,7 @@ class Repository extends Model
             $obj->approved = $out->approved;
             $obj->done = $out->done;
             $obj->appointment = $out->appointment;
+            $obj->is_paid = $out->is_paid;
 
             $data[] = $obj;
         }
@@ -114,11 +176,18 @@ class Repository extends Model
     }
 
     public static function loadTableUser($data){
-
+        // return $data;
         $query = DB::connection('mysql')
-        ->table('appointments')
-        ->select('*')
-        ->where('user_id', $data->user_id)
+        ->table('appointments as a')
+        ->select(
+            'a.user_id as user_id',
+            'a.appointment as appointment',
+            'a.is_approved as is_approved',
+            'a.is_done as is_done'
+            // 'b.id as paymentId'
+        )
+        // ->join('payment as b', 'a.user_id', '=', 'b.user_id')
+        ->where('a.user_id', $data->user_id)
         ->get();
 
         $data = array();
@@ -126,9 +195,11 @@ class Repository extends Model
         foreach($query as $out){
             $obj = new \stdClass;
 
-            $obj->date = $out->from;
+            $obj->user_id = $out->user_id;
+            $obj->date = $out->appointment;
             $obj->approved = $out->is_approved;
             $obj->done = $out->is_done;
+            // $obj->paymentId = $out->paymentId;
 
             $data[] = $obj;
         }

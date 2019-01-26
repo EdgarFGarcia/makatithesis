@@ -17,6 +17,7 @@
                 <td>Date</td>
                 <td>Approved</td>
                 <td>Done</td>
+                <td>Paid</td>
             </tr>
         </thead>
     </table>
@@ -34,6 +35,7 @@
 @endif
 @include('modal.infoappointment')
 @include('modal.makeappointment')
+@include('modal.makepayment');
 @endsection
 
 @section('appointmentCalendarTitle')
@@ -73,6 +75,29 @@
         loadCalender();
         loadCalendarAdmin();
 
+        // check appointment availability
+        $(document).on('click', '#checkInner', function(){
+            var appointment = $('#appointmentInner').val();
+            $.ajax({
+
+                url : "{{url('api/checkdate')}}",
+                method : "POST",
+                datatype : "JSON",
+                data : {
+                    appointment : appointment
+                },
+                success:function(r){
+                    if(r.response){
+                        toastr.info(r.message);
+                    }
+                },
+                error:function(r){
+                    console.log(r);
+                }
+
+            });
+        });
+
         $(document).on('click', '#changepassword', function(){
             var changepassword = $('#passwordchange').val();
             $.ajax({
@@ -99,7 +124,7 @@
 
         $(document).on('click', '#reserve', function(){
             var appointment = $('#appointmentInner').val();
-
+            // console.log(appointment);
             $.ajax({
                 url: "{{ url('api/appointmentInner') }}",
                 method: "POST",
@@ -153,6 +178,71 @@
                 error:function(r){
                     console.log(r);
                 }
+            });
+
+        });
+
+        $('#appointmentUser').on('click', 'tbody tr', function(){
+            var data = appointmentUser.row(this).data();
+            console.log(data);
+
+            $.ajax({
+
+                url : "{{ url('api/payment') }}",
+                method : "POST",
+                datatype : "JSON",
+                data : {
+                    data : data
+                },
+                success:function(r){
+                    if(r.response){
+                        console.log(r.query[0].mode_of_payment);
+                        $('#userpayment').modal("toggle");
+                        $('#pid').val(r.query[0].date);
+                        $('#amount').val(r.query[0].payment);
+                        if(r.query[0].is_paid == 0){
+                            $('#settled').val("No");
+                        }else{
+                            $('#settled').val("Yes");
+                        }
+                        if(r.query[0].mode_of_payment != null){
+                            $('#modeofpayment').attr('disabled', 'disabled');
+                            $('#modeofpayment').val(r.query[0].mode_of_payment);
+                        }
+                    }
+                },
+                error:function(r){
+                    console.log(r);
+                    toastr.info("Already made a payment");
+                }
+
+            });
+        });
+
+        $(document).on('click', '#payment', function(){
+            var modeofpayment = $('#modeofpayment').val();
+            var paymentid = $('#pid').val();
+
+            $.ajax({
+
+                url : "{{ url('api/makepayment') }}",
+                method : "POST",
+                datatype : "JSON",
+                data : {
+                    modeofpayment : modeofpayment,
+                    paymentid : paymentid
+                },
+                success:function(r){
+                    // console.log(r);
+                    if(r.response){
+                        $('#userpayment').modal("toggle");
+                        toastr.info(r.message);
+                    }
+                },
+                error:function(r){
+                    console.log(r);
+                }
+
             });
 
         });
@@ -258,7 +348,8 @@
                 {data: 'name', name: 'name'},
                 {data: 'appointment', name: 'appointment'},
                 {data: 'approved', name: 'approved'},
-                {data: 'done', name: 'done'}
+                {data: 'done', name: 'done'},
+                {data: 'is_paid', name: 'is_paid'}
             ]
         });
     }

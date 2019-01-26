@@ -35,6 +35,36 @@ class MainController extends Controller
         return redirect('/');
 	}
 
+    // check availability of the date
+    public function checkdate(Request $r){
+        $dateToCheck = date('Y-m-d', strtotime($r->appointment));
+        $time = date('H:i:s', strtotime($r->appointment));
+
+        $checkAvailability = Repository::checkAvailability($dateToCheck);
+
+        if($checkAvailability[0]->count == 0){
+            return response()->json([
+                'response' => true,
+                'message' => "Three (3) Slots are available"
+            ]);
+        }else if($checkAvailability[0]->count == 1){
+            return response()->json([
+                'response' => true,
+                'message' => "Two (2) Slots are available"
+            ]);
+        }else if($checkAvailability[0]->count == 2){
+            return response()->json([
+                'response' => true,
+                'message' => "One (1) Slot is available"
+            ]);
+        }else{
+            return response()->json([
+                'response' => false,
+                'message' => "Fully Booked"
+            ]);
+        }
+    }
+
 	// make an appointment
     public function appoint(Request $r){
         // return $r->all();
@@ -56,8 +86,10 @@ class MainController extends Controller
             ]);
         }
 
-    	$date = date('Y-m-d H:i:s', strtotime($r->date));
-    	$query = Repository::saveCustomerInfo($r, $date);
+    	$date = date('Y-m-d', strtotime($r->appointment));
+        $time = date('H:i:s', strtotime($r->appointment));
+        $whole = date('Y-m-d H:i:s', strtotime($r->appointment));
+    	$query = Repository::saveCustomerInfo($r, $date, $time, $whole);
     	if($query){
     		return response()->json([
     			'message' => "Successfully Appointed",
@@ -84,8 +116,10 @@ class MainController extends Controller
         }
 
         $date = date('Y-m-d H:i:s', strtotime($r->appointment));
+        $time = date('H:i:s', strtotime($r->appointment));
+        $whole = date('Y-m-d H:i:s', strtotime($r->appointment));
 
-        $query = Repository::appointmentInner($r, $date);
+        $query = Repository::appointmentInner($r, $date, $time, $whole);
 
         if($query){
             return response()->json([
@@ -99,6 +133,34 @@ class MainController extends Controller
             ]);
         }
 
+    }
+
+    // payment
+    public function payment(Request $r){
+        // return $r->data['user_id'];
+        // return $r->all();
+        $query = Repository::payment($r->data['date']);
+        if($query){
+            return response()->json([
+                'response' => true,
+                'query' => $query
+            ]);
+        }
+    }
+
+    // make payment
+    public function makepayment(Request $r){
+        // return $r->all();
+        $paymentDate = $r->paymentid;
+        $mode = $r->modeofpayment;
+        $query = Repository::makepayment($mode, $paymentDate);
+
+        if($query){
+            return response()->json([
+                'response' => true,
+                'message' => "Payment Succesful"
+            ]);
+        }
     }
 
     // load appointment

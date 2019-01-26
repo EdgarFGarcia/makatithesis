@@ -35,6 +35,28 @@
 			}
 		});
 
+		// check availability
+		$(document).on('click', '#check', function(){
+			var appointment = $('#appointment').val();
+			// console.log(appointment);
+			$.ajax({
+				url : "{{ url('api/checkdate') }}",
+				method : "POST",
+				datatype : "JSON",
+				data : {
+					appointment : appointment
+				},
+				success:function(r){
+					if(r.response){
+						toastr.info(r.message);
+					}
+				},
+				error:function(r){
+					console.log(r);
+				}
+			});
+		});
+
 		$(document).on('click', '#save', function(){
 			var firstname = $('#firstname').val();
 			var middlename = $('#middlename').val();
@@ -42,7 +64,7 @@
 			var phonenumber = $('#phonenumber').val();
 			var mobilenumber = $('#mobilenumber').val();
 			var emailaddress = $('#emailaddress').val();
-			var date = $('#appontment').val();
+			var date = $('#appointment').val();
 
 			$.ajax({
 				url: "{{ url('api/appoint') }}",
@@ -84,5 +106,6 @@
 		});
 
 	});
+
 </script>
 @endsection

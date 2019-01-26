@@ -14,6 +14,7 @@
             <div class="input-group-append" data-target="#appointment" data-toggle="datetimepicker">
                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
             </div>
+            <button class="btn btn-info" id="checkInner">Check</button>
         </div>
       </div>
       <div class="modal-footer">

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Appointments extends Migration
+class Payment extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,13 @@ class Appointments extends Migration
      */
     public function up()
     {
-        Schema::create('appointments', function (Blueprint $table) {
+        Schema::create('payment', function (Blueprint $table) {
             $table->increments('id');
-
             $table->integer('user_id');
-
-            $table->date('from');
-
-            $table->time('time');
-
-            $table->dateTime('appointment');
-
-            $table->tinyInteger('is_approved')->default(0);
-            $table->tinyInteger('is_done')->default(0);
-
+            $table->string('payment');
+            $table->string('mode_of_payment')->nullable();
+            $table->datetime('date')->nullable();
+            $table->tinyInteger('is_paid')->default(0);
             $table->timestamps();
         });
     }
@@ -38,6 +31,6 @@ class Appointments extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('appointments');
+        Schema::dropIfExists('payment');
     }
 }

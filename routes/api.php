@@ -34,3 +34,11 @@ Route::post('appointmentInner', 'API\MainController@appointmentInner');
 
 // edit profile
 Route::post('editprofile', 'API\MainController@editprofile');
+
+// check availability on selected date
+Route::post('checkdate', 'API\MainController@checkdate');
+
+// virtual payment
+Route::post('payment', 'API\MainController@payment');
+// make payment
+Route::post('makepayment', 'API\MainController@makepayment');
