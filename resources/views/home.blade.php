@@ -15,6 +15,7 @@
             <tr>
                 <td>Name</td>
                 <td>Date</td>
+                <td>Appointment Type</td>
                 <td>Approved</td>
                 <td>Done</td>
                 <td>Paid</td>
@@ -27,6 +28,7 @@
         <thead>
             <tr>
                 <td>Date</td>
+                <td>Appointment Type</td>
                 <td>Approved</td>
                 <td>Done</td>
             </tr>
@@ -74,6 +76,7 @@
         loadUserTable();
         loadCalender();
         loadCalendarAdmin();
+        loadappointmentType();
 
         // check appointment availability
         $(document).on('click', '#checkInner', function(){
@@ -100,13 +103,26 @@
 
         $(document).on('click', '#changepassword', function(){
             var changepassword = $('#passwordchange').val();
+            var username = $('#username').val();
+            var firstname = $('#firstname').val();
+            var middlename = $('#middlename').val();
+            var lastname = $('#lastname').val();
+            var bday = $('#bday').val();
+            var mobilenumber = $('#mobilenumber').val();
+
             $.ajax({
                 url : "{{ url('api/editprofile') }}",
                 method : "POST",
                 datatype : "JSON",
                 data : {
                     changepassword : changepassword,
-                    user_id : user_id
+                    user_id : user_id,
+                    username : username,
+                    firstname : firstname,
+                    middlename : middlename,
+                    lastname : lastname,
+                    bday : bday,
+                    mobilenumber : mobilenumber
                 },
                 success:function(r){
                     if(r.response){
@@ -121,9 +137,13 @@
         });
 
         $('#appointment').datetimepicker();
+        $('#bday').datetimepicker({
+            format: "YYYY-MM-DD"
+        });
 
         $(document).on('click', '#reserve', function(){
             var appointment = $('#appointmentInner').val();
+            var appointmentType = $('#appointmentType').val();
             // console.log(appointment);
             $.ajax({
                 url: "{{ url('api/appointmentInner') }}",
@@ -131,7 +151,8 @@
                 datatype: "JSON",
                 data: {
                     user_id : user_id,
-                    appointment : appointment
+                    appointment : appointment,
+                    appointmentType : appointmentType
                 },
                 success:function(r){
                     if(r.response){
@@ -304,6 +325,28 @@
 
     });
 
+    function loadappointmentType(){
+        $.ajax({
+
+            url : "{{ url('api/getAppointmentType') }}",
+            method : "POST",
+            dataType : "JSON",
+            success:function(r){
+                console.log(r);
+                $.each(r.query, function(i, items){
+                    $('#appointmentType').append($('<option>', {
+                        value: items.id,
+                        text: items.name
+                    }));
+                });
+            },
+            error:function(r){
+
+            }
+
+        });
+    }
+
     function reloadUserTable(){
         $('#appointmentUser').DataTable().ajax.reload();
     }
@@ -329,6 +372,7 @@
             },
             columns: [
                 {data: 'date', name: 'date'},
+                {data: 'appointmentName', name: 'appointmentName'},
                 {data: 'approved', name: 'approved'},
                 {data: 'done', name: 'done'}
             ]
@@ -347,6 +391,7 @@
             columns: [
                 {data: 'name', name: 'name'},
                 {data: 'appointment', name: 'appointment'},
+                {data: 'appointmentName', name: 'appointmentName'},
                 {data: 'approved', name: 'approved'},
                 {data: 'done', name: 'done'},
                 {data: 'is_paid', name: 'is_paid'}

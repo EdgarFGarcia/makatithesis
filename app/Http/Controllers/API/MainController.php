@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repository;
+use App\Model\AppointmentType;
 
 use Auth;
 use Redirect;
@@ -34,6 +35,16 @@ class MainController extends Controller
 		// return redirect()->intended('welcome');
         return redirect('/');
 	}
+
+    // get appointment type
+    public function getAppointmentType(){
+        $query = AppointmentType::getAppointmentType();
+        if($query){
+            return response()->json([
+                'query' => $query
+            ]);
+        }
+    }
 
     // check availability of the date
     public function checkdate(Request $r){
@@ -105,6 +116,7 @@ class MainController extends Controller
 
     // make an appointment inner
     public function appointmentInner(Request $r){
+        // return $r->all();
         $dateTocheck = date('Y-m-d', strtotime($r->appointment));
         $check = Repository::checkAppointment($dateTocheck);
 
@@ -172,14 +184,12 @@ class MainController extends Controller
     public function loadDataAppointment(Request $r){
         // return $r->data['appointmentId'];
         return $query = Repository::loadDataAppointment($r);
-
     }
 
     // approve appointment
     public function approveAppointment(Request $r){
         // return $r->appointId;
         return $query = Repository::approveAppointment($r);
-
     }
 
     public function approveAppointmentDone(Request $r){
@@ -212,7 +222,6 @@ class MainController extends Controller
                 'end'   => $out->from,
                 'start' => $out->from,
             );
-
             
         }
 
@@ -235,7 +244,6 @@ class MainController extends Controller
                 'start' => $out->from
             );
         }
-
         return json_encode($all);
     }
 

@@ -29,6 +29,9 @@ Route::post('loadMyAppointment', 'API\MainController@loadMyAppointment');
 Route::post('loadAllCalendar', 'API\MainController@loadAllCalendar');
 Route::get('getSales', 'API\MainController@getSales');
 
+// appointment type
+Route::post('getAppointmentType', 'API\MainController@getAppointmentType');
+
 // make appointment inner
 Route::post('appointmentInner', 'API\MainController@appointmentInner');
 

@@ -16,12 +16,17 @@
 	</div>
 	<div class="row">
 		<div class="col-md-4">
-			<label for="phonenumber">Phone Number</label>
-			<input type="number" class="form-control" placeholder="9111111" id="phonenumber">
+			<label for="phonenumber">Birth Date</label>
+			<div class="input-group bdate" id="datepickerbday" data-target-input="nearest">
+                <input type="text" class="form-control datetimepicker-input" id="bday" data-target="#datepickerbday"/>
+                <div class="input-group-append" data-target="#datepickerbday" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
 		</div>
 		<div class="col-md-4">
 			<label for="mobilenumber">Mobile Number</label>
-			<input type="text" class="form-control" placeholder="0927xxxxxxx" id="mobilenumber">
+			<input type="text" class="form-control" placeholder="927xxxxxxx" id="mobilenumber">
 		</div>
 		<div class="col-md-4">
 			<label for="emailaddress">Email Address</label>
@@ -38,6 +43,12 @@
                 </div>
                 <button class="btn btn-info" id="check">Check</button>
             </div>
+		</div>
+		<div class="col-md-4">
+			<label for="appointmentType">Appointment Type</label>
+			<select name="appointmentType" id="appointmentType" class="form-control">
+				
+			</select>
 		</div>
 	</div>
 	<div class="row">

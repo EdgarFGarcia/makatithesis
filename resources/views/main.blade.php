@@ -27,6 +27,9 @@
 <script>
 	$(document).ready(function(){
 		$('#datetimepicker1').datetimepicker();
+		$('#datepickerbday').datetimepicker({
+			format: "YYYY-MM-DD"
+		});
 
 		$('#mobilenumber').keyup(function(){
 			var prefix = "63";
@@ -34,6 +37,8 @@
 				this.value = prefix + this.value;
 			}
 		});
+
+		getAppointmentType();
 
 		// check availability
 		$(document).on('click', '#check', function(){
@@ -61,10 +66,11 @@
 			var firstname = $('#firstname').val();
 			var middlename = $('#middlename').val();
 			var lastname = $('#lastname').val();
-			var phonenumber = $('#phonenumber').val();
+			var bday = $('#bday').val();
 			var mobilenumber = $('#mobilenumber').val();
 			var emailaddress = $('#emailaddress').val();
 			var date = $('#appointment').val();
+			var appointmentType = $('#appointmentType').val();
 
 			$.ajax({
 				url: "{{ url('api/appoint') }}",
@@ -74,10 +80,11 @@
 					firstname : firstname,
 					middlename : middlename,
 					lastname : lastname,
-					phonenumber : phonenumber,
+					bday : bday,
 					mobilenumber : mobilenumber,
 					emailaddress : emailaddress,
-					appointment : date
+					appointment : date,
+					appointmentType : appointmentType
 				},
 				success:function(r){
 					// console.log(r);
@@ -106,6 +113,28 @@
 		});
 
 	});
+
+	function getAppointmentType(){
+		$.ajax({
+
+			url : "{{ url('api/getAppointmentType') }}",
+			method : "POST",
+			dataType : "JSON",
+			success:function(r){
+				console.log(r);
+				$.each(r.query, function(i, items){
+					$('#appointmentType').append($('<option>', {
+						value: items.id,
+						text: items.name
+					}));
+				});
+			},
+			error:function(r){
+
+			}
+
+		});
+	}
 
 </script>
 @endsection

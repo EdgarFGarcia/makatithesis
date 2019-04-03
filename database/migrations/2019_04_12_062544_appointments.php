@@ -24,6 +24,9 @@ class Appointments extends Migration
 
             $table->dateTime('appointment');
 
+            $table->unsignedInteger('appointment_type');
+            $table->foreign('appointment_type')->references('id')->on('appointment_type');
+
             $table->tinyInteger('is_approved')->default(0);
             $table->tinyInteger('is_done')->default(0);
 

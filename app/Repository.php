@@ -58,7 +58,7 @@ class Repository extends Model
     		'firstname' => $data->firstname,
     		'middlename' => $data->middlename,
     		'lastname' => $data->lastname,
-    		'phonenumber' => $data->phonenumber,
+    		'bday' => $data->bday,
     		'mobilenumber' => $data->mobilenumber,
     		'email' => $data->emailaddress,
     		'password' => $password,
@@ -73,6 +73,7 @@ class Repository extends Model
     		'from' => $date,
             'time' => $time,
             'appointment' => $whole,
+            'appointment_type' => $data->appointmentType,
     		'created_at' => DB::raw("NOW()")
     	]);
 
@@ -97,6 +98,7 @@ class Repository extends Model
             'from' => $date,
             'time' => $time,
             'appointment' => $whole,
+            'appointment_type' => $data->appointmentType,
             'created_at' => DB::raw("NOW()")
         ]);
 
@@ -143,12 +145,15 @@ class Repository extends Model
             'a.is_approved as approved',
             'a.is_done as done',
             'a.id as appointmentId',
+            'a.appointment_type as appointment_type',
             'b.id as userId',
-            'c.is_paid as is_paid'
+            'c.is_paid as is_paid',
+            'd.name as appointmentName'
         )
 
         ->join('users as b', 'a.user_id', '=', 'b.id')
         ->join('payment as c', 'a.user_id', '=', 'c.user_id')
+        ->join('appointment_type as d', 'a.appointment_type', '=', 'd.id')
 
         ->where('a.is_done', 0)
         ->where('c.is_paid', 1)
@@ -167,6 +172,7 @@ class Repository extends Model
             $obj->done = $out->done;
             $obj->appointment = $out->appointment;
             $obj->is_paid = $out->is_paid;
+            $obj->appointmentName = $out->appointmentName; 
 
             $data[] = $obj;
         }
@@ -183,10 +189,12 @@ class Repository extends Model
             'a.user_id as user_id',
             'a.appointment as appointment',
             'a.is_approved as is_approved',
-            'a.is_done as is_done'
+            'a.is_done as is_done',
+            'b.name as appointmentName'
             // 'b.id as paymentId'
         )
         // ->join('payment as b', 'a.user_id', '=', 'b.user_id')
+        ->join('appointment_type as b', 'a.appointment_type', '=', 'b.id')
         ->where('a.user_id', $data->user_id)
         ->get();
 
@@ -199,6 +207,7 @@ class Repository extends Model
             $obj->date = $out->appointment;
             $obj->approved = $out->is_approved;
             $obj->done = $out->is_done;
+            $obj->appointmentName = $out->appointmentName;
             // $obj->paymentId = $out->paymentId;
 
             $data[] = $obj;
@@ -311,7 +320,13 @@ class Repository extends Model
         ->table('users')
         ->where('id', $data->user_id)
         ->update([
-            'password' => $newpassword
+            'password' => $newpassword,
+            'username' => $data->username,
+            'firstname' => $data->firstname,
+            'middlename' => $data->middlename,
+            'lastname' => $data->lastname,
+            'bday' => $data->bday,
+            'mobilenumber' => $data->mobilenumber
         ]);
     }
 }

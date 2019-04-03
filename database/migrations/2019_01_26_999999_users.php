@@ -21,7 +21,7 @@ class Users extends Migration
             $table->string('middlename');
             $table->string('lastname');
 
-            $table->string('phonenumber');
+            $table->date('bday');
             $table->string('mobilenumber');
             $table->string('email');
 

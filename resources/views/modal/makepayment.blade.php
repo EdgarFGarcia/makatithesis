@@ -17,7 +17,12 @@
         <input type="text" id="amount" class="form-control" disabled="disabled">
 
         <label for="modeofpayment">Mode Of Payment</label>
-        <input type="text" id="modeofpayment" class="form-control">
+        <select id="modeofpayment" class="form-control">
+          <option id="Cebuana">Cebuana</option>
+          <option id="Pawalan">Pawalan</option>
+          <option id="BDO">BDO</option>
+          <option id="BPI">BPI</option>
+        </select> 
 
         <label for="settled">Is Paid</label>
         <input type="text" id="settled" class="form-control" disabled="disabled">
